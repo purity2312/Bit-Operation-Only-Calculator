@@ -46,18 +46,29 @@ def divide(num1, num2):
         return 0
 
     quotient = 0
-    if (num1 < 0) ^ (num2 < 0):
-        sign = -1
-    else:
-         sign = 1
-    num1 = abs(num1)
-    num2 = abs(num2)
+    negative = (num1 < 0) ^ (num2 < 0)
+
+    if num1 < 0:
+        num1 = add(~num1, 1)
+    if num2 < 0:
+        num2 = add(~num2, 1)
 
     while num1 >= num2:
-        num1 = subtract(num1, num2)
-        quotient = add(quotient, 1)
+        temp = num2
+        multiple = 1
 
-    return multiply(quotient, sign)
+        # double temp until it exceeds num1
+        while (temp << 1) <= num1:
+            temp = temp << 1
+            multiple = multiple << 1
+
+        # subtract the largest chunk found in num1
+        num1 = subtract(num1, temp)
+        quotient = add(quotient, multiple)
+
+    if negative:
+        quotient = add(~quotient, 1)
+    return quotient
 
 def display_menu():
     print("Please select operation:")
